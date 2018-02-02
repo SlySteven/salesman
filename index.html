@@ -26,7 +26,35 @@
 			<div class="row">
 				<div class="jumbotron">
 					<h1>I've Got Just The Thing!</h1>
-					<div class="score">
+				</div>
+			</div>
+
+			<div class="deck-picker">
+
+				<div class="row">
+					<div class="col-sm-4">
+						<div class="panel panel-danger">
+							<div class="panel-heading">
+								<h3 class="panel-title">Deck</h3>
+							</div>
+							<div class="panel-body">
+								<div class="card">
+									<select name="select" class="game-dropdown" id="deck-id" required="true">
+										<option value="classic">Classic</option>
+										<option selected value="superbowl-2018">Superbowl 2018</option>
+									</select>
+									<button type="button" class="btn btn-outline" id="button-start">Start the game!</button>
+								</div>
+							</div>
+						</div>
+
+					</div><!-- /.col-sm-4 -->
+				</div><!-- .row -->
+			</div> <!-- .deck-picker -->
+
+			<div class="main-game">
+				<div class="row">
+					<div class="jumbotron score">
 						<p> Score:
 							<button type="button" class="btn btn-default score-sub"><span class="glyphicon glyphicon-minus"></span></button>
 							<span id="score">0</span>
@@ -34,76 +62,76 @@
 						</p>
 					</div>
 				</div>
-			</div>
-			<div class="row">
-				<div class="col-sm-4">
-					<div class="panel panel-success">
-						<div class="panel-heading">
-							<h3 class="panel-title">Customer</h3>
+				<div class="row">
+					<div class="col-sm-4">
+						<div class="panel panel-success">
+							<div class="panel-heading">
+								<h3 class="panel-title">Customer</h3>
+							</div>
+							<div class="panel-body">
+								<div class="card">
+									<button type="button" class="btn btn-default refresh-customer"><span class="glyphicon glyphicon-repeat"></span></button>
+									<h3 id="customer"></h3>
+								</div>
+							</div>
 						</div>
-						<div class="panel-body">
-							<div class="card">
-							<button type="button" class="btn btn-default refresh-customer"><span class="glyphicon glyphicon-repeat"></span></button>
-							<h3 id="customer"></h3>
+					</div><!-- /.col-sm-4 -->
+					<div class="col-sm-4">
+						<div class="panel panel-info">
+							<div class="panel-heading">
+								<h3 class="panel-title" id="p2-title">Ingredients</h3>
+							</div>
+							<div class="panel-body">
+								<div class="card">
+									<button type="button" class="btn btn-default refresh-ingredient" data-index="1"><span class="glyphicon glyphicon-repeat"></span></button><h3 class="ingredient" id="ing-1"></h3>
+								</div>
+								<div class="card">
+									<button type="button" class="btn btn-default refresh-ingredient" data-index="2"><span class="glyphicon glyphicon-repeat"></span></button><h3 class="ingredient" id="ing-2"></h3>
+								</div>
+								<div class="card">
+									<button type="button" class="btn btn-default refresh-ingredient" data-index="3"><span class="glyphicon glyphicon-repeat"></span></button><h3 class="ingredient" id="ing-3"></h3>
+								</div>
+								<div class="card">
+									<button type="button" class="btn btn-default refresh-ingredient" data-index="4"><span class="glyphicon glyphicon-repeat"></span></button><h3 class="ingredient" id="ing-4"></h3>
+								</div>
+								<div class="card">
+									<button type="button" class="btn btn-default refresh-ingredient" data-index="5"><span class="glyphicon glyphicon-repeat"></span></button><h3 class="ingredient" id="ing-5"></h3>
+								</div>
+								<div class="card">
+									<button type="button" class="btn btn-default refresh-ingredient" data-index="6"><span class="glyphicon glyphicon-repeat"></span></button><h3 class="ingredient" id="ing-6"></h3>
+								</div>
+							</div>
 						</div>
-					</div>
+					</div><!-- /.col-sm-4 -->
+				</div><!-- .row -->
+				<div class="row">
+					<p><em>A game by <a href="http://www.steven.li/" target="_blank">Steven Li</a>. Based off the game <a href="https://boardgamegeek.com/boardgame/113289/snake-oil" target="_blank">Snake Oil</a>.</em><br><em>If you had fun, <a href="https://twitter.com/intent/tweet?text=www.steven.li%2Fsalesman" target="_blank">tweet about it</a> or <a href="http://eepurl.com/cxkP6j" target="_blank">sign up for emails</a>.</em></p>
+				</div><!-- .row -->
+			</div><!-- .main-game -->
+			<div class="overlay" id="overlay-submission">
+				<button type="button" class="btn btn-default submission-close"><span class="glyphicon glyphicon-remove"></span></button>
+				<div id="submission">
+					<span id="submission-text"></span>
 				</div>
-			</div><!-- /.col-sm-4 -->
-			<div class="col-sm-4">
-				<div class="panel panel-info">
-					<div class="panel-heading">
-						<h3 class="panel-title" id="p2-title">Ingredients</h3>
-					</div>
-					<div class="panel-body">
-						<div class="card">
-							<button type="button" class="btn btn-default refresh-ingredient" data-index="1"><span class="glyphicon glyphicon-repeat"></span></button><h3 class="ingredient" id="ing-1"></h3>
-						</div>
-						<div class="card">
-						<button type="button" class="btn btn-default refresh-ingredient" data-index="2"><span class="glyphicon glyphicon-repeat"></span></button><h3 class="ingredient" id="ing-2"></h3>
-					</div>
-					<div class="card">
-						<button type="button" class="btn btn-default refresh-ingredient" data-index="3"><span class="glyphicon glyphicon-repeat"></span></button><h3 class="ingredient" id="ing-3"></h3>
-					</div>
-					<div class="card">
-						<button type="button" class="btn btn-default refresh-ingredient" data-index="4"><span class="glyphicon glyphicon-repeat"></span></button><h3 class="ingredient" id="ing-4"></h3>
-					</div>
-					<div class="card">
-						<button type="button" class="btn btn-default refresh-ingredient" data-index="5"><span class="glyphicon glyphicon-repeat"></span></button><h3 class="ingredient" id="ing-5"></h3>
-					</div>
-					<div class="card">
-						<button type="button" class="btn btn-default refresh-ingredient" data-index="6"><span class="glyphicon glyphicon-repeat"></span></button><h3 class="ingredient" id="ing-6"></h3>
-					</div>
-				</div>
 			</div>
-		</div><!-- /.col-sm-4 -->
-	</div><!-- .row -->
-	<div class="row">
-		<p><em>A game by <a href="http://www.steven.li/" target="_blank">Steven Li</a>. Based off the game <a href="https://boardgamegeek.com/boardgame/113289/snake-oil" target="_blank">Snake Oil</a>.</em><br><em>If you had fun, <a href="https://twitter.com/intent/tweet?text=www.steven.li%2Fsalesman" target="_blank">tweet about it</a> or <a href="http://eepurl.com/cxkP6j" target="_blank">sign up for emails</a>.</em></p>
-	</div><!-- .row -->
-	<div id="overlay">
-		<button type="button" class="btn btn-default submission-close"><span class="glyphicon glyphicon-remove"></span></button>
-		<div id="submission">
-			<span id="submission-text"></span>
-		</div>
-	</div>
 
-</div> <!-- /container -->
+		</div> <!-- /container -->
 
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="js/bootstrap.min.js"></script>
-<script src="js/jquery.bigtext.js"></script>
-<script src="js/game.js"></script>
-<script>
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<!-- Include all compiled plugins (below), or include individual files as needed -->
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/jquery.bigtext.js"></script>
+		<script src="js/game.js"></script>
+		<script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+				(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+				m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-	ga('create', 'UA-57340821-1', 'auto');
-	ga('send', 'pageview');
+			ga('create', 'UA-57340821-1', 'auto');
+			ga('send', 'pageview');
 
-</script>
-</body>
-</html>
+		</script>
+	</body>
+	</html>

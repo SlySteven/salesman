@@ -1,10 +1,15 @@
 var customers;
 var ingredients;
+var deck_id = 'classic';
 var next_customer = 0;
 var next_ingredient = 0;
 var ing_count = 6;
 var fade_speed = 250;
 var highlighted = [];
+var decks = {
+	"classic":1,
+	"superbowl-2018":1
+};
 
 $('.score-add').on('click', function () {
 	var score = $('#score');
@@ -22,50 +27,89 @@ $('.submission-close').on('click', function () {
 	removeSubmission();
 });
 
-$.ajax({
-	url: 'customers.txt'
-}).done(function(content) {
+$("#button-start").on('click', function() {
+	  var options_valid = fetchOptions();
+	  if (!options_valid) {
+		return;
+	  }
+	  startGame();
+});
 
-	// normalize the line breaks, then split into lines
-		customers = content.replace(/\r\n|\r/g, '\n').trim().split('\n');
-		shuffle(customers);
-		$('#customer').text(getNextCustomer());
+var dropdown_deck_id = $("#deck-id");
+deck_id = readCookie("deck_id");
+if (deck_id != null) {
+  dropdown_player_id.val(deck_id);
+}
+
+function fetchOptions() {
+  deck_id = $("#deck-id").val();
+  console.log(deck_id);
+  console.log(decks[deck_id]);
+
+  var no_errors = 1;
+  if (decks[deck_id] != 1) {
+	$("#deck-id").addClass("select-error");
+	no_errors = 0;
+  }
+
+  if (no_errors) {
+	document.cookie = "deck_id=" + deck_id;
+  }
+
+  return no_errors;
+}
+function startGame () {
+	initializeDeck(deck_id);
+	$(".main-game").show();
+	$(".deck-picker").hide();
+}
+
+function initializeDeck(deck) {
+	$.ajax({
+		url: 'customers.txt'
+	}).done(function(content) {
+
+		// normalize the line breaks, then split into lines
+			customers = content.replace(/\r\n|\r/g, '\n').trim().split('\n');
+			shuffle(customers);
+			$('#customer').text(getNextCustomer());
+
+			// only set up the click handler if there were lines found
+			if (customers && customers.length) {
+				$('.refresh-customer').on('click', function () {
+					// show the corresponding line
+					var cust = $('#customer');
+					fade(cust, getNextCustomer());
+				});
+		}
+	});
+
+	$.ajax({
+		url: 'ingredients.txt'
+	}).done(function(content) {
+
+		// normalize the line breaks, then split into lines
+		ingredients = content.replace(/\r\n|\r/g, '\n').trim().split('\n');
+		shuffle(ingredients);
+		console.log(ingredients);
+		for (var i = 1; i <= ing_count; i++) {
+				$('#ing-' + i).text(getNextIngredient());
+		}
 
 		// only set up the click handler if there were lines found
-		if (customers && customers.length) {
-			$('.refresh-customer').on('click', function () {
+		if (ingredients && ingredients.length) {
+			$('.refresh-ingredient').on('click', function () {
+				var index = $(this).data('index');
 				// show the corresponding line
-				var cust = $('#customer');
-				fade(cust, getNextCustomer());
+				var ing = $('#ing-' + index);
+				refresh(ing);
 			});
-	}
-});
-
-$.ajax({
-	url: 'ingredients.txt'
-}).done(function(content) {
-
-	// normalize the line breaks, then split into lines
-	ingredients = content.replace(/\r\n|\r/g, '\n').trim().split('\n');
-	shuffle(ingredients);
-	console.log(ingredients);
-	for (var i = 1; i <= ing_count; i++) {
-			$('#ing-' + i).text(getNextIngredient());
-	}
-
-	// only set up the click handler if there were lines found
-	if (ingredients && ingredients.length) {
-		$('.refresh-ingredient').on('click', function () {
-			var index = $(this).data('index');
-			// show the corresponding line
-			var ing = $('#ing-' + index);
-			refresh(ing);
-		});
-		$(".ingredient").on('click', function (){ 
-			highlight($(this));
-		});
-	}
-});
+			$(".ingredient").on('click', function (){ 
+				highlight($(this));
+			});
+		}
+	});
+} // fn.initializeDeck
 
 function refresh (ing) {
 			dehighlight(ing);
@@ -110,13 +154,13 @@ function setSubmission () {
 	var submission = highlighted[0].text() + "<br>" + highlighted[1].text();
 
 	$("#submission-text").html(submission);
-	$("#overlay").show(1000, function () {
+	$("#overlay-submission").show(1000, function () {
 		$("#submission-text").bigText();
 	});
 }
 
 function removeSubmission () {
-	$("#overlay").hide(1000, function () {
+	$("#overlay-submission").hide(1000, function () {
 		$("#submission-text").hide();
 		refresh(highlighted[0]);
 		refresh(highlighted[1]);
@@ -148,4 +192,14 @@ function getNextIngredient () {
 		let j = Math.floor(Math.random() * i);
 		[a[i - 1], a[j]] = [a[j], a[i - 1]];
 	}
+}
+function readCookie(name) {
+  var nameEQ = name + "=";
+  var ca = document.cookie.split(';');
+  for(var i=0;i < ca.length;i++) {
+    var c = ca[i];
+    while (c.charAt(0)==' ') c = c.substring(1,c.length);
+    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+  }
+  return null;
 }

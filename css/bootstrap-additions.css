@@ -1,7 +1,7 @@
 .highlighted {
   outline: 3px dashed #5bc0de;
 }
-#overlay {
+.overlay {
   display: none;
   position: fixed;
   top: 0;
@@ -10,6 +10,34 @@
   height: 100%;
   padding: 30px 10px 0;
   background-color: #2b3e50;
+}
+.main-game {
+  display: none;
+}
+.deck-picker .card {
+  text-align: center;
+}
+select, option {
+  background-color: transparent;
+  font-size: 26px;
+  margin: auto;
+  text-align: center;
+  text-align-last: center;
+  display: block;
+}
+.select-error {
+  border-width: 3px;
+  border-color: red;
+}
+.btn-outline {
+  border-color: #ccc;
+  border-radius: 4px;
+  padding: 8px;
+  background-color: transparent;
+  margin: 0 10px 10px 0;
+}
+#button-start {
+  margin-top: 15px;
 }
 #submission {
   text-align: center;
