@@ -24,6 +24,7 @@ select, option {
   text-align: center;
   text-align-last: center;
   display: block;
+  border-color: #ccc;
 }
 .select-error {
   border-width: 3px;
