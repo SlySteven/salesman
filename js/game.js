@@ -13,7 +13,7 @@ var decks = {
 	},
 	"superbowl-2018": {
 		"customers": "customers-superbowl-2018.txt",
-		"ingredients": "ingredients-classic.txt"
+		"ingredients": "ingredients-superbowl-2018.txt"
 	}
 };
 
