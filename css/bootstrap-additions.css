@@ -1,0 +1,29 @@
+.highlighted {
+  outline: 3px dashed #5bc0de;
+}
+#overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 30px 10px 0;
+  background-color: #2b3e50;
+}
+#submission {
+  text-align: center;
+  width: 100%;
+  height: 100%;
+}
+#submission-text {
+  display: none;
+  font-size: 60px;
+}
+.submission-close {
+  font-size: 25px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 999;
+}
