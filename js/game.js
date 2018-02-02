@@ -7,8 +7,14 @@ var ing_count = 6;
 var fade_speed = 250;
 var highlighted = [];
 var decks = {
-	"classic":1,
-	"superbowl-2018":1
+	"classic": {
+		"customers": "customers-classic.txt",
+		"ingredients": "ingredients-classic.txt"
+	},
+	"superbowl-2018": {
+		"customers": "customers-superbowl-2018.txt",
+		"ingredients": "ingredients-classic.txt"
+	}
 };
 
 $('.score-add').on('click', function () {
@@ -38,7 +44,7 @@ $("#button-start").on('click', function() {
 var dropdown_deck_id = $("#deck-id");
 deck_id = readCookie("deck_id");
 if (deck_id != null) {
-  dropdown_player_id.val(deck_id);
+  dropdown_deck_id.val(deck_id);
 }
 
 function fetchOptions() {
@@ -47,7 +53,7 @@ function fetchOptions() {
   console.log(decks[deck_id]);
 
   var no_errors = 1;
-  if (decks[deck_id] != 1) {
+  if (!(deck_id in decks)) {
 	$("#deck-id").addClass("select-error");
 	no_errors = 0;
   }
@@ -65,8 +71,10 @@ function startGame () {
 }
 
 function initializeDeck(deck) {
+	var custURL = decks[deck]["customers"];
+	var ingURL = decks[deck]["ingredients"];
 	$.ajax({
-		url: 'customers.txt'
+		url: custURL
 	}).done(function(content) {
 
 		// normalize the line breaks, then split into lines
@@ -85,7 +93,7 @@ function initializeDeck(deck) {
 	});
 
 	$.ajax({
-		url: 'ingredients.txt'
+		url: ingURL
 	}).done(function(content) {
 
 		// normalize the line breaks, then split into lines
