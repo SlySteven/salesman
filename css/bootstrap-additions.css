@@ -14,8 +14,11 @@
 .main-game {
   display: none;
 }
-.deck-picker .card {
+.card {
   text-align: center;
+}
+.card-ingredient {
+  height: 40px;
 }
 select, option {
   background-color: transparent;
@@ -39,6 +42,9 @@ select, option {
 }
 #button-start {
   margin-top: 15px;
+}
+.refresh-ingredient {
+  display: none;
 }
 #submission {
   text-align: center;
