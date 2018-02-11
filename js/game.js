@@ -11,6 +11,10 @@ var decks = {
 		"customers": "customers-classic.txt",
 		"ingredients": "ingredients-classic.txt"
 	},
+	"olympics-winter-2018": {
+		"customers": "customers-olympics-winter-2018.txt",
+		"ingredients": "ingredients-classic.txt"
+	},
 	"superbowl-2018": {
 		"customers": "customers-superbowl-2018.txt",
 		"ingredients": "ingredients-superbowl-2018.txt"
