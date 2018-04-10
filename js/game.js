@@ -77,30 +77,49 @@ function initializeDeck(deck) {
 		}
 	});
 
+console.log("Checking ingredients for: " + deck);
 	db.collection("ingredients").doc(deck).collection("deck").get().then((querySnapshot) => {
-	    querySnapshot.forEach((doc) => {
-	        ingredients.push(doc.id);
-	    });
-
-		shuffle(ingredients);
-		for (var i = 1; i <= ing_count; i++) {
-			$('#ing-' + i).text(getNextIngredient());
+		// If a custom ingredient list exists, use that.
+		console.log(querySnapshot);
+		if (!querySnapshot.empty) {
+		    console.log("Finished adding deck-specific.");
+		    prepIngredients(querySnapshot);
 		}
-
-		// only set up the click handler if there were lines found
-		if (ingredients && ingredients.length) {
-			$('.refresh-ingredient').on('click', function () {
-				var index = $(this).data('index');
-				// show the corresponding line
-				var ing = $('#ing-' + index);
-				refresh(ing);
-			});
-			$(".ingredient").on('click', function (){ 
-				highlight($(this));
+		// Else use Classic list.
+		else {
+			console.log("No deck-specific ingredients. Defaulting to Classic.");
+			querySnapshot = db.collection("ingredients").doc("Classic").collection("deck").get().then((querySnapshot) => {
+			    console.log("Finished adding classic ingredients.");
+			    prepIngredients(querySnapshot);
 			});
 		}
+
 	});
 } // fn.initializeDeck
+
+function prepIngredients (querySnapshot) {
+	console.log("Prepping ingredients.");
+    querySnapshot.forEach((doc) => {
+        ingredients.push(doc.id);
+    });
+	shuffle(ingredients);
+	for (var i = 1; i <= ing_count; i++) {
+		$('#ing-' + i).text(getNextIngredient());
+	}
+
+	// only set up the click handler if there were lines found
+	if (ingredients && ingredients.length) {
+		$('.refresh-ingredient').on('click', function () {
+			var index = $(this).data('index');
+			// show the corresponding line
+			var ing = $('#ing-' + index);
+			refresh(ing);
+		});
+		$(".ingredient").on('click', function (){
+			highlight($(this));
+		});
+	}
+}
 
 function refresh (ing) {
 			dehighlight(ing);
