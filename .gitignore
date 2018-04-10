@@ -1,4 +1,5 @@
 # Ignore lists
 *.txt
+*.DS_Store
 
 mongoose-free-6.5.exe
