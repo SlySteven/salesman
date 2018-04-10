@@ -1,25 +1,14 @@
-var customers;
-var ingredients;
+var customers = [];
+var ingredients = [];
 var deck_id = 'classic';
 var next_customer = 0;
 var next_ingredient = 0;
 var ing_count = 6;
 var fade_speed = 250;
 var highlighted = [];
-var decks = {
-	"classic": {
-		"customers": "customers-classic.txt",
-		"ingredients": "ingredients-classic.txt"
-	},
-	"olympics-winter-2018": {
-		"customers": "customers-olympics-winter-2018.txt",
-		"ingredients": "ingredients-classic.txt"
-	},
-	"superbowl-2018": {
-		"customers": "customers-superbowl-2018.txt",
-		"ingredients": "ingredients-superbowl-2018.txt"
-	}
-};
+
+// Initialize Cloud Firestore through Firebase
+var db = firebase.firestore();
 
 $('.score-add').on('click', function () {
 	var score = $('#score');
@@ -53,14 +42,9 @@ if (deck_id != null) {
 
 function fetchOptions() {
   deck_id = $("#deck-id").val();
-  console.log(deck_id);
-  console.log(decks[deck_id]);
+  console.log("Picking deck " + deck_id);
 
   var no_errors = 1;
-  if (!(deck_id in decks)) {
-	$("#deck-id").addClass("select-error");
-	no_errors = 0;
-  }
 
   if (no_errors) {
 	document.cookie = "deck_id=" + deck_id;
@@ -75,37 +59,32 @@ function startGame () {
 }
 
 function initializeDeck(deck) {
-	var custURL = decks[deck]["customers"];
-	var ingURL = decks[deck]["ingredients"];
-	$.ajax({
-		url: custURL
-	}).done(function(content) {
+	db.collection("customers").doc(deck).collection("deck").get().then((querySnapshot) => {
+	    querySnapshot.forEach((doc) => {
+	        customers.push(doc.id);
+	    });
 
-		// normalize the line breaks, then split into lines
-			customers = content.replace(/\r\n|\r/g, '\n').trim().split('\n');
-			shuffle(customers);
-			$('#customer').text(getNextCustomer());
+		shuffle(customers);
+		$('#customer').text(getNextCustomer());
 
-			// only set up the click handler if there were lines found
-			if (customers && customers.length) {
-				$('.refresh-customer').on('click', function () {
-					// show the corresponding line
-					var cust = $('#customer');
-					fade(cust, getNextCustomer());
-				});
+		// only set up the click handler if there were lines found
+		if (customers && customers.length) {
+			$('.refresh-customer').on('click', function () {
+				// show the corresponding line
+				var cust = $('#customer');
+				fade(cust, getNextCustomer());
+			});
 		}
 	});
 
-	$.ajax({
-		url: ingURL
-	}).done(function(content) {
+	db.collection("ingredients").doc(deck).collection("deck").get().then((querySnapshot) => {
+	    querySnapshot.forEach((doc) => {
+	        ingredients.push(doc.id);
+	    });
 
-		// normalize the line breaks, then split into lines
-		ingredients = content.replace(/\r\n|\r/g, '\n').trim().split('\n');
 		shuffle(ingredients);
-		console.log(ingredients);
 		for (var i = 1; i <= ing_count; i++) {
-				$('#ing-' + i).text(getNextIngredient());
+			$('#ing-' + i).text(getNextIngredient());
 		}
 
 		// only set up the click handler if there were lines found
