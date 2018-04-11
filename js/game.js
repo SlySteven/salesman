@@ -66,8 +66,18 @@ function fetchDecks() {
 								+ "</option>";
 			deck_html += deck_string;
 		}
-		$(deck_dropdown).html(deck_string);
+		$(deck_dropdown).html(deck_html);
+		hideLoader();
+		$(".deck-picker").show();
 	});
+}
+
+function hideLoader() {
+	$(".loader").hide();
+}
+
+function showLoader() {
+	$(".loader").show();
 }
 
 function fetchOptions() {
@@ -84,7 +94,7 @@ function fetchOptions() {
 }
 function startGame () {
 	initializeDeck(deck_id);
-	$(".main-game").show();
+	showLoader();
 	$(".deck-picker").hide();
 }
 
@@ -107,7 +117,7 @@ function initializeDeck(deck) {
 		}
 	});
 
-console.log("Checking ingredients for: " + deck);
+	console.log("Checking ingredients for: " + deck);
 	db.collection("ingredients").doc(deck).collection("deck").get().then((querySnapshot) => {
 		// If a custom ingredient list exists, use that.
 		console.log(querySnapshot);
@@ -126,6 +136,11 @@ console.log("Checking ingredients for: " + deck);
 
 	});
 } // fn.initializeDeck
+
+function initializeComplete() {
+	$(".main-game").show();
+	hideLoader();
+}
 
 function prepIngredients (querySnapshot) {
 	console.log("Prepping ingredients.");
@@ -149,6 +164,7 @@ function prepIngredients (querySnapshot) {
 			highlight($(this));
 		});
 	}
+	initializeComplete();
 }
 
 function refresh (ing) {
