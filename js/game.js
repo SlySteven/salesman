@@ -1,6 +1,6 @@
 var customers = [];
 var ingredients = [];
-var deck_id = 'classic';
+var deck_id = 'Classic';
 var next_customer = 0;
 var next_ingredient = 0;
 var ing_count = 6;
@@ -9,6 +9,8 @@ var highlighted = [];
 
 // Initialize Cloud Firestore through Firebase
 var db = firebase.firestore();
+
+fetchDecks();
 
 $('.score-add').on('click', function () {
 	var score = $('#score');
@@ -34,10 +36,38 @@ $("#button-start").on('click', function() {
 	  startGame();
 });
 
+/*
 var dropdown_deck_id = $("#deck-id");
 deck_id = readCookie("deck_id");
 if (deck_id != null) {
   dropdown_deck_id.val(deck_id);
+}
+*/
+
+function fetchDecks() {
+	var decks = [];
+	db.collection("customers").get().then((querySnapshot) => {
+		querySnapshot.forEach((doc) => {
+			decks.push(doc.id);
+			if (doc.data().default) {
+				deck_id = doc.id;
+			}
+		});
+		var deck_dropdown = $("#deck-id");
+		var deck_html;
+		for (var i = 0; i < decks.length; i++) {
+			console.log("Appending " + decks[i]);
+			var deck_string = "<option value='"
+								+ decks[i]
+								+ "' "
+								+ (decks[i] == deck_id ? "selected='true' " : '')
+								+ ">"
+								+ decks[i]
+								+ "</option>";
+			deck_html += deck_string;
+		}
+		$(deck_dropdown).html(deck_string);
+	});
 }
 
 function fetchOptions() {
