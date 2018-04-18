@@ -25,7 +25,8 @@ $('#button-join').click(function(e){
 	return false;
 });
 $('#button-create').click(function(e){
-	io.emit('create game', function (msg) {
+	fetchOptions();
+	io.emit('create game', deck_id, function (msg) {
 		if (msg == -1) {
 			console.log("Error creating game.")
 			return false;
