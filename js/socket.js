@@ -4,19 +4,10 @@ io = io('https://steven-express-test.herokuapp.com/');
 
 io.on('connect', function () {
 	console.log("Socket established.");
-
-	io.on('next customer', function(msg){
-		if (msg == -1) {
-			console.log("Error getting next customer.")
-		}
-		console.log("Received customer " + msg);
-		var cust = $('#customer');
-		fade(cust, msg);
-		cust_ready = true;
-		if (!initialized) {
-			initCheck();
-		}
-	});
+	hookRefresh();
+});
+socket.on('reconnect', (attemptNumber) => {
+	hookRefresh();
 });
 
 var room_code;
@@ -52,3 +43,18 @@ $('#button-create').click(function(e){
 	});
 	return false;
 });
+
+function hookRefresh() {
+	io.on('next customer', function(msg){
+		if (msg == -1) {
+			console.log("Error getting next customer.")
+		}
+		console.log("Received customer " + msg);
+		var cust = $('#customer');
+		fade(cust, msg);
+		cust_ready = true;
+		if (!initialized) {
+			initCheck();
+		}
+	});
+}
