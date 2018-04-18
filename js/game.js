@@ -9,6 +9,7 @@ var highlighted = [];
 var room_code;
 var ing_ready = false;
 var cust_ready = false;
+var initialized = false;
 
 // Initialize Cloud Firestore through Firebase
 var db = firebase.firestore();
@@ -131,8 +132,9 @@ function initializeDeck(deck) {
 } // fn.initializeDeck
 
 function initCheck() {
-	if (ing_ready && cust_ready) {
+	if (!initialized && ing_ready && cust_ready) {
 		initializeComplete();
+		initialized = true;
 	}
 	else {
 		console.log("Init not ready. Ingredients: " + ing_ready + ", Customers: " + cust_ready);

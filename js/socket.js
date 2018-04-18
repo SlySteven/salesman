@@ -22,6 +22,7 @@ $('#button-join').click(function(e){
 			startGame(msg);
 		}
 	});
+	window.scrollTo(0,0);
 	return false;
 });
 $('#button-create').click(function(e){
@@ -46,4 +47,7 @@ io.on('next customer', function(msg){
 	var cust = $('#customer');
 	fade(cust, msg);
 	cust_ready = true;
+	if (!initialized) {
+		initCheck();
+	}
 });
