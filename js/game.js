@@ -99,6 +99,7 @@ function fetchOptions() {
 function startGame (room_code) {
 	console.log("Client starting game in room " + room_code);
 	this.room_code = room_code;
+	$("#page-title").html($("#page-title").text() + "<br>Room: " + room_code);
 	showLoader();
 	initializeDeck(deck_id);
 	$(".game-setup").hide();
