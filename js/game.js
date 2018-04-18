@@ -10,6 +10,8 @@ var highlighted = [];
 // Initialize Cloud Firestore through Firebase
 var db = firebase.firestore();
 
+var socket = io('https://steven-express-test.herokuapp.com/');
+
 fetchDecks();
 
 $('.score-add').on('click', function () {
