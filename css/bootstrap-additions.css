@@ -62,7 +62,7 @@ select, option {
   right: 20px;
   z-index: 999;
 }
-.deck-picker {
+.game-setup {
   display: none;
 }
 .loader {
@@ -79,4 +79,12 @@ select, option {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+input,
+select {
+  text-align: center;
+  margin-bottom: 15px;
+}
+input {
+  text-transform: uppercase;
 }

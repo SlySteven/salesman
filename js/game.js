@@ -10,8 +10,6 @@ var highlighted = [];
 // Initialize Cloud Firestore through Firebase
 var db = firebase.firestore();
 
-var socket = io('https://steven-express-test.herokuapp.com/');
-
 fetchDecks();
 
 $('.score-add').on('click', function () {
@@ -70,7 +68,7 @@ function fetchDecks() {
 		}
 		$(deck_dropdown).html(deck_html);
 		hideLoader();
-		$(".deck-picker").show();
+		$(".game-setup").show();
 	});
 }
 
@@ -112,9 +110,7 @@ function initializeDeck(deck) {
 		// only set up the click handler if there were lines found
 		if (customers && customers.length) {
 			$('.refresh-customer').on('click', function () {
-				// show the corresponding line
-				var cust = $('#customer');
-				fade(cust, getNextCustomer());
+				io.emit('next_customer', room_code);
 			});
 		}
 	});

@@ -30,26 +30,42 @@
 			</div>
 			<div class="loader"></div>
 
-			<div class="deck-picker">
+			<div class="game-setup">
 
 				<div class="row">
 					<div class="col-sm-4">
 						<div class="panel panel-danger">
 							<div class="panel-heading">
-								<h3 class="panel-title">Deck</h3>
+								<h3 class="panel-title">Create New Game</h3>
 							</div>
 							<div class="panel-body">
 								<div class="card">
 									<select name="select" class="game-dropdown" id="deck-id" required="true">
 									</select>
-									<button type="button" class="btn btn-outline" id="button-start">Start the game!</button>
+								</div>
+								<div class="card">
+									<button type="button" class="btn btn-outline" id="button-create">Create Game</button>
+								</div>
+							</div>
+						</div>
+						<p>Or</p>
+						<div class="panel panel-danger">
+							<div class="panel-heading">
+								<h3 class="panel-title">Enter Room Code</h3>
+							</div>
+							<div class="panel-body">
+								<div class="card">
+									<input class="room-input" type="text">
+								</div>
+								<div class="card">
+									<button type="button" class="btn btn-outline" id="button-join">Join Game</button>
 								</div>
 							</div>
 						</div>
 
 					</div><!-- /.col-sm-4 -->
 				</div><!-- .row -->
-			</div> <!-- .deck-picker -->
+			</div> <!-- .game-setup -->
 
 			<div class="main-game">
 				<div class="row">
@@ -138,6 +154,7 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
 		<script src="js/bootstrap.min.js"></script>
 		<script src="js/jquery.bigtext.js"></script>
+		<script src="js/socket.js"></script>
 		<script src="js/game.js"></script>
 		<script>
 			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
