@@ -1,46 +1,48 @@
-var socket;
-socket = io('http://localhost:5000/');
-//socket = io('https://steven-express-test.herokuapp.com/');
+var io;
+io = io('http://localhost:5000/');
+//io = io('https://steven-express-test.herokuapp.com/');
 
-socket.on('connect', function () {
+io.on('connect', function () {
 	console.log("Socket established.");
 });
 
 var room_code;
 
 $('#button-join').click(function(e){
-	room_code = $('#button-join').val()
-	socket.emit('join game', room_code, function (msg) {
+	room_code = $('#room-input').val()
+	io.emit('join game', room_code, function (msg) {
 		if (msg == -1) {
-			console.log("Error joining game.")
+			console.log("Error joining game " + msg)
 		}
 		else if (msg == -2) {
-			console.log("No room exists.")
+			console.log("No room exists for " + msg)
 		}
 		else {
 			console.log("Joining room: " + msg);
-			createGame(room_code);
+			startGame(msg);
 		}
 	});
 	return false;
 });
 $('#button-create').click(function(e){
-	socket.emit('create game', function (msg) {
+	io.emit('create game', function (msg) {
 		if (msg == -1) {
 			console.log("Error creating game.")
 			return false;
 		}
 		else {
 			console.log("Creating game under room: " + msg);
-			createGame(msg);
+			startGame(msg);
 		}
 	});
 	return false;
 });
-socket.on('next customer', function(msg){
+io.on('next customer', function(msg){
 	if (msg == -1) {
 		console.log("Error getting next customer.")
 	}
+	console.log("Received customer " + msg);
 	var cust = $('#customer');
 	fade(cust, msg);
+	cust_ready = true;
 });

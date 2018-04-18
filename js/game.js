@@ -6,6 +6,9 @@ var next_ingredient = 0;
 var ing_count = 6;
 var fade_speed = 250;
 var highlighted = [];
+var room_code;
+var ing_ready = false;
+var cust_ready = false;
 
 // Initialize Cloud Firestore through Firebase
 var db = firebase.firestore();
@@ -92,27 +95,19 @@ function fetchOptions() {
 
   return no_errors;
 }
-function startGame () {
-	initializeDeck(deck_id);
+function startGame (room_code) {
+	console.log("Client starting game in room " + room_code);
+	this.room_code = room_code;
 	showLoader();
-	$(".deck-picker").hide();
+	initializeDeck(deck_id);
+	$(".game-setup").hide();
 }
 
 function initializeDeck(deck) {
-	db.collection("customers").doc(deck).collection("deck").get().then((querySnapshot) => {
-	    querySnapshot.forEach((doc) => {
-	        customers.push(doc.id);
-	    });
 
-		shuffle(customers);
-		$('#customer').text(getNextCustomer());
-
-		// only set up the click handler if there were lines found
-		if (customers && customers.length) {
-			$('.refresh-customer').on('click', function () {
-				io.emit('next_customer', room_code);
-			});
-		}
+	$('.refresh-customer').on('click', function () {
+		console.log("Requesting new customer. " + room_code);
+		io.emit('next customer', room_code);
 	});
 
 	console.log("Checking ingredients for: " + deck);
@@ -135,6 +130,14 @@ function initializeDeck(deck) {
 	});
 } // fn.initializeDeck
 
+function initCheck() {
+	if (ing_ready && cust_ready) {
+		initializeComplete();
+	}
+	else {
+		console.log("Init not ready. Ingredients: " + ing_ready + ", Customers: " + cust_ready);
+	}
+}
 function initializeComplete() {
 	$(".main-game").show();
 	hideLoader();
@@ -162,7 +165,8 @@ function prepIngredients (querySnapshot) {
 			highlight($(this));
 		});
 	}
-	initializeComplete();
+	ing_ready = true;
+	initCheck();
 }
 
 function refresh (ing) {
@@ -222,13 +226,6 @@ function removeSubmission () {
 	});
 }
 
-function getNextCustomer () {
-	console.log("Next customer: " + next_customer);
-	if (customers.length == next_customer) {
-		next_customer = 0;
-	}
-	return customers[next_customer++];
-}
 function getNextIngredient () {
 	console.log("Next ingredient: " + next_ingredient);
 	if (ingredients.length == next_ingredient) {
