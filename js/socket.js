@@ -1,6 +1,6 @@
 var io;
-io = io('http://localhost:5000/');
-//io = io('https://steven-express-test.herokuapp.com/');
+//io = io('http://localhost:5000/');
+io = io('https://steven-express-test.herokuapp.com/');
 
 io.on('connect', function () {
 	console.log("Socket established.");
