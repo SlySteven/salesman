@@ -6,6 +6,10 @@ io.on('connect', function () {
 	console.log("Socket established.");
 	hookRefresh();
 });
+io.on('disconnect', (reason) => {
+	console.log("Disconnected: " + reason);
+	showLoader();
+});
 io.on('reconnect', (attemptNumber) => {
 	joinRoom(true);
 });
@@ -61,6 +65,10 @@ function hookRefresh() {
 		cust_ready = true;
 		if (!initialized) {
 			initCheck();
+		}
+		// Else this might be the first time we're loading the customer since a disconnect, so hide the loader
+		else {
+			hideLoader();
 		}
 	});
 }

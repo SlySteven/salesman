@@ -78,10 +78,12 @@ function fetchDecks() {
 
 function hideLoader() {
 	$(".loader").hide();
+	$(".blocker").hide();
 }
 
 function showLoader() {
 	$(".loader").show();
+	$(".blocker").show();
 }
 
 function fetchOptions() {
