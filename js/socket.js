@@ -17,7 +17,7 @@ $('#button-join').click(function(e){
 });
 
 function joinRoom(reconnect) {
-	room_code = $('#room-input').val()
+	room_code = $('#room-input').val().toUpperCase();
 	io.emit('join game', room_code, function (msg) {
 		if (msg == -1) {
 			console.log("Error joining game " + msg)
