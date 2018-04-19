@@ -113,19 +113,19 @@ function initializeDeck(deck) {
 	});
 
 	console.log("Checking ingredients for: " + deck);
-	db.collection("ingredients").doc(deck).collection("deck").get().then((querySnapshot) => {
+    db.collection("ingredients").doc(deck).get().then((doc) => {
 		// If a custom ingredient list exists, use that.
-		console.log(querySnapshot);
-		if (!querySnapshot.empty) {
+		console.log(doc);
+		if (!doc.empty) {
 		    console.log("Finished adding deck-specific.");
-		    prepIngredients(querySnapshot);
+		    prepIngredients(doc);
 		}
 		// Else use Classic list.
 		else {
 			console.log("No deck-specific ingredients. Defaulting to Classic.");
-			querySnapshot = db.collection("ingredients").doc("Classic").collection("deck").get().then((querySnapshot) => {
+			db.collection("ingredients").doc("Classic").get().then((doc) => {
 			    console.log("Finished adding classic ingredients.");
-			    prepIngredients(querySnapshot);
+			    prepIngredients(doc);
 			});
 		}
 
@@ -146,12 +146,11 @@ function initializeComplete() {
 	hideLoader();
 }
 
-function prepIngredients (querySnapshot) {
-	console.log("Prepping ingredients.");
-    querySnapshot.forEach((doc) => {
-        ingredients.push(doc.id);
-    });
+function prepIngredients (doc) {
+
+    ingredients = convertDBDeck(doc);
 	shuffle(ingredients);
+	console.log("Prepping " + ingredients.length + " ingredients.");
 	for (var i = 1; i <= ing_count; i++) {
 		$('#ing-' + i).text(getNextIngredient());
 	}

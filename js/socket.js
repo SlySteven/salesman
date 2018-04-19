@@ -62,3 +62,7 @@ function hookRefresh() {
 		}
 	});
 }
+
+function convertDBDeck (deck) {
+    return deck.get('deck').split("\t");
+}
