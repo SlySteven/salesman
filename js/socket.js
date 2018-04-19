@@ -7,7 +7,7 @@ io.on('connect', function () {
 	hookRefresh();
 });
 io.on('reconnect', (attemptNumber) => {
-	joinRoom();
+	joinRoom(true);
 });
 
 var room_code;
@@ -16,7 +16,7 @@ $('#button-join').click(function(e){
 	joinRoom();
 });
 
-function joinRoom() {
+function joinRoom(reconnect) {
 	room_code = $('#room-input').val()
 	io.emit('join game', room_code, function (msg) {
 		if (msg == -1) {
@@ -27,7 +27,9 @@ function joinRoom() {
 		}
 		else {
 			console.log("Joining room: " + msg);
-			startGame(msg);
+			if (!reconnect) {
+				startGame(msg);
+			}
 		}
 	});
 	window.scrollTo(0,0);
