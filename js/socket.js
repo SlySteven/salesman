@@ -6,13 +6,17 @@ io.on('connect', function () {
 	console.log("Socket established.");
 	hookRefresh();
 });
-socket.on('reconnect', (attemptNumber) => {
-	hookRefresh();
+io.on('reconnect', (attemptNumber) => {
+	joinRoom();
 });
 
 var room_code;
 
 $('#button-join').click(function(e){
+	joinRoom();
+});
+
+function joinRoom() {
 	room_code = $('#room-input').val()
 	io.emit('join game', room_code, function (msg) {
 		if (msg == -1) {
@@ -28,7 +32,7 @@ $('#button-join').click(function(e){
 	});
 	window.scrollTo(0,0);
 	return false;
-});
+}
 $('#button-create').click(function(e){
 	fetchOptions();
 	io.emit('create game', deck_id, function (msg) {
