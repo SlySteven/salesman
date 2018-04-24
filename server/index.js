@@ -1,6 +1,6 @@
 var app = require('express')();
 var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var io = require('socket.io')(http, { path: '/salesman/socket.io'});
 var firebase = require('firebase/app');
 require('firebase/firestore');
 const PORT = process.env.PORT || 5000;
