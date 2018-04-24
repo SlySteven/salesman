@@ -11,10 +11,11 @@ var firebase_config = {
     databaseURL: process.env.FIREBASE_DATABASE_URL,
     projectId: process.env.FIREBASE_PROJECT_ID,
     storageBucket: "",
-    messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID
+    messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+    timestampsInSnapshots: true,
 };
 firebase.initializeApp(firebase_config);
-var db = firebase.firestore();
+const db = firebase.firestore();
 
 app.get('/', function(req, res){
     res.sendFile(__dirname + '/index.html');
