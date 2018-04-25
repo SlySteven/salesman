@@ -1,97 +1,102 @@
 .highlighted {
-  outline: 3px dashed #5bc0de;
+	outline: 3px dashed #5bc0de;
 }
 .overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  padding: 30px 10px 0;
-  background-color: #2b3e50;
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	padding: 30px 10px 0;
+	background-color: #2b3e50;
 }
 .main-game {
-  display: none;
+	display: none;
 }
 .card {
-  text-align: center;
+	text-align: center;
 }
 .card-ingredient {
-  height: 40px;
+	height: 40px;
 }
-select, option {
-  background-color: transparent;
-  font-size: 26px;
-  margin: auto;
-  text-align: center;
-  text-align-last: center;
-  display: block;
-  border-color: #ccc;
+select,
+option {
+	background-color: transparent;
+	font-size: 26px;
+	margin: auto;
+	text-align: center;
+	text-align-last: center;
+	display: block;
+	border-color: #ccc;
 }
 .select-error {
-  border-width: 3px;
-  border-color: red;
+	border-width: 3px;
+	border-color: red;
 }
 .btn-outline {
-  border-color: #ccc;
-  border-radius: 4px;
-  padding: 8px;
-  background-color: transparent;
-  margin: 0 10px 10px 0;
+	border-color: #ccc;
+	border-radius: 4px;
+	padding: 8px;
+	background-color: transparent;
+	margin: 0 10px 10px 0;
 }
 #button-start {
-  margin-top: 15px;
+	margin-top: 15px;
 }
 .refresh-ingredient {
-  display: none;
+	display: none;
 }
 #submission {
-  text-align: center;
-  width: 100%;
-  height: 100%;
+	text-align: center;
+	width: 100%;
+	height: 100%;
 }
 #submission-text {
-  display: none;
-  font-size: 60px;
+	display: none;
+	font-size: 60px;
 }
 .submission-close {
-  font-size: 25px;
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  z-index: 999;
+	font-size: 25px;
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	z-index: 999;
 }
 .game-setup {
-  display: none;
+	display: none;
 }
 .loader {
-  border: 16px solid #f3f3f3; /* Light grey */
-  border-top: 16px solid #3498db; /* Blue */
-  border-radius: 50%;
-  margin: auto; /* centering */
-  width: 120px;
-  height: 120px;
-  animation: spin 2s linear infinite;
-  z-index: 999;
+	border: 16px solid #f3f3f3; /* Light grey */
+	border-top: 16px solid #3498db; /* Blue */
+	border-radius: 50%;
+	margin: auto; /* centering */
+	width: 120px;
+	height: 120px;
+	animation: spin 2s linear infinite;
+	z-index: 999;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
 }
 input,
 select {
-  text-align: center;
-  margin-bottom: 15px;
+	text-align: center;
+	margin-bottom: 15px;
 }
 input {
-  text-transform: uppercase;
+	text-transform: uppercase;
 }
 .blocker {
-  width: 100%;
-  height: 100%;
-  background: #2b3e50;
-  position: fixed;
-  z-index: 990;
+	width: 100%;
+	height: 100%;
+	background: #2b3e50;
+	position: fixed;
+	z-index: 990;
 }

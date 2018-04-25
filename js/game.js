@@ -1,6 +1,6 @@
 var customers = [];
 var ingredients = [];
-var deck_id = 'Classic';
+var deck_id = "Classic";
 var next_customer = 0;
 var next_ingredient = 0;
 var ing_count = 6;
@@ -16,28 +16,28 @@ var db = firebase.firestore();
 
 fetchDecks();
 
-$('.score-add').on('click', function () {
-	var score = $('#score');
-	fade(score, function () {
-		score.text(parseInt(score.text())+1)
+$(".score-add").on("click", function() {
+	var score = $("#score");
+	fade(score, function() {
+		score.text(parseInt(score.text()) + 1);
 	});
 });
-$('.score-sub').on('click', function () {
-	var score = $('#score');
-	fade(score, function () {
-		score.text(Math.max(parseInt(score.text())-1, 0));
+$(".score-sub").on("click", function() {
+	var score = $("#score");
+	fade(score, function() {
+		score.text(Math.max(parseInt(score.text()) - 1, 0));
 	});
 });
-$('.submission-close').on('click', function () {
+$(".submission-close").on("click", function() {
 	removeSubmission();
 });
 
-$("#button-start").on('click', function() {
-	  var options_valid = fetchOptions();
-	  if (!options_valid) {
+$("#button-start").on("click", function() {
+	var options_valid = fetchOptions();
+	if (!options_valid) {
 		return;
-	  }
-	  startGame();
+	}
+	startGame();
 });
 
 /*
@@ -50,30 +50,34 @@ if (deck_id != null) {
 
 function fetchDecks() {
 	var decks = [];
-	db.collection("customers").get().then((querySnapshot) => {
-		querySnapshot.forEach((doc) => {
-			decks.push(doc.id);
-			if (doc.data().default) {
-				deck_id = doc.id;
+	db
+		.collection("customers")
+		.get()
+		.then(querySnapshot => {
+			querySnapshot.forEach(doc => {
+				decks.push(doc.id);
+				if (doc.data().default) {
+					deck_id = doc.id;
+				}
+			});
+			var deck_dropdown = $("#deck-id");
+			var deck_html;
+			for (var i = 0; i < decks.length; i++) {
+				console.log("Appending " + decks[i]);
+				var deck_string =
+					"<option value='" +
+					decks[i] +
+					"' " +
+					(decks[i] == deck_id ? "selected='true' " : "") +
+					">" +
+					decks[i] +
+					"</option>";
+				deck_html += deck_string;
 			}
+			$(deck_dropdown).html(deck_html);
+			hideLoader();
+			$(".game-setup").show();
 		});
-		var deck_dropdown = $("#deck-id");
-		var deck_html;
-		for (var i = 0; i < decks.length; i++) {
-			console.log("Appending " + decks[i]);
-			var deck_string = "<option value='"
-								+ decks[i]
-								+ "' "
-								+ (decks[i] == deck_id ? "selected='true' " : '')
-								+ ">"
-								+ decks[i]
-								+ "</option>";
-			deck_html += deck_string;
-		}
-		$(deck_dropdown).html(deck_html);
-		hideLoader();
-		$(".game-setup").show();
-	});
 }
 
 function hideLoader() {
@@ -87,18 +91,18 @@ function showLoader() {
 }
 
 function fetchOptions() {
-  deck_id = $("#deck-id").val();
-  console.log("Picking deck " + deck_id);
+	deck_id = $("#deck-id").val();
+	console.log("Picking deck " + deck_id);
 
-  var no_errors = 1;
+	var no_errors = 1;
 
-  if (no_errors) {
-	document.cookie = "deck_id=" + deck_id;
-  }
+	if (no_errors) {
+		document.cookie = "deck_id=" + deck_id;
+	}
 
-  return no_errors;
+	return no_errors;
 }
-function startGame (room_code) {
+function startGame(room_code) {
 	console.log("Client starting game in room " + room_code);
 	this.room_code = room_code;
 	$("#page-title").html($("#page-title").text() + "<br>Room: " + room_code);
@@ -108,39 +112,45 @@ function startGame (room_code) {
 }
 
 function initializeDeck(deck) {
-
-	$('.refresh-customer').on('click', function () {
+	$(".refresh-customer").on("click", function() {
 		console.log("Requesting new customer. " + room_code);
-		io.emit('next customer', room_code);
+		io.emit("next customer", room_code);
 	});
 
 	console.log("Checking ingredients for: " + deck);
-    db.collection("ingredients").doc(deck).get().then((doc) => {
-		// If a custom ingredient list exists, use that.
-		console.log(doc);
-		if (!doc.empty) {
-		    console.log("Finished adding deck-specific.");
-		    prepIngredients(doc);
-		}
-		// Else use Classic list.
-		else {
-			console.log("No deck-specific ingredients. Defaulting to Classic.");
-			db.collection("ingredients").doc("Classic").get().then((doc) => {
-			    console.log("Finished adding classic ingredients.");
-			    prepIngredients(doc);
-			});
-		}
-
-	});
+	db
+		.collection("ingredients")
+		.doc(deck)
+		.get()
+		.then(doc => {
+			// If a custom ingredient list exists, use that.
+			console.log(doc);
+			if (!doc.empty) {
+				console.log("Finished adding deck-specific.");
+				prepIngredients(doc);
+			} else {
+				// Else use Classic list.
+				console.log("No deck-specific ingredients. Defaulting to Classic.");
+				db
+					.collection("ingredients")
+					.doc("Classic")
+					.get()
+					.then(doc => {
+						console.log("Finished adding classic ingredients.");
+						prepIngredients(doc);
+					});
+			}
+		});
 } // fn.initializeDeck
 
 function initCheck() {
 	if (!initialized && ing_ready && cust_ready) {
 		initializeComplete();
 		initialized = true;
-	}
-	else {
-		console.log("Init not ready. Ingredients: " + ing_ready + ", Customers: " + cust_ready);
+	} else {
+		console.log(
+			"Init not ready. Ingredients: " + ing_ready + ", Customers: " + cust_ready
+		);
 	}
 }
 function initializeComplete() {
@@ -148,24 +158,23 @@ function initializeComplete() {
 	hideLoader();
 }
 
-function prepIngredients (doc) {
-
-    ingredients = convertDBDeck(doc);
+function prepIngredients(doc) {
+	ingredients = convertDBDeck(doc);
 	shuffle(ingredients);
 	console.log("Prepping " + ingredients.length + " ingredients.");
 	for (var i = 1; i <= ing_count; i++) {
-		$('#ing-' + i).text(getNextIngredient());
+		$("#ing-" + i).text(getNextIngredient());
 	}
 
 	// only set up the click handler if there were lines found
 	if (ingredients && ingredients.length) {
-		$('.refresh-ingredient').on('click', function () {
-			var index = $(this).data('index');
+		$(".refresh-ingredient").on("click", function() {
+			var index = $(this).data("index");
 			// show the corresponding line
-			var ing = $('#ing-' + index);
+			var ing = $("#ing-" + index);
 			refresh(ing);
 		});
-		$(".ingredient").on('click', function (){
+		$(".ingredient").on("click", function() {
 			highlight($(this));
 		});
 	}
@@ -173,56 +182,58 @@ function prepIngredients (doc) {
 	initCheck();
 }
 
-function refresh (ing) {
-			dehighlight(ing);
-			fade(ing, getNextIngredient());
+function refresh(ing) {
+	dehighlight(ing);
+	fade(ing, getNextIngredient());
 }
 
-function fade (e, f) {
-			e.fadeOut(fade_speed, function () {
-				e.text(f);
-			});
-			e.fadeIn(fade_speed);
+function fade(e, f) {
+	e.fadeOut(fade_speed, function() {
+		e.text(f);
+	});
+	e.fadeIn(fade_speed);
 }
 
-function highlight (ing) { 
+function highlight(ing) {
 	// console.log("Highlighting " + $(ing).text());
 	highlighted.push(ing);
 	if (highlighted.length >= 2) {
 		setSubmission();
 	}
-	ing.addClass('highlighted');
-	ing.off('click');
-	ing.on('click', function (){ 
-		dehighlight(ing)
+	ing.addClass("highlighted");
+	ing.off("click");
+	ing.on("click", function() {
+		dehighlight(ing);
 	});
 }
 
-function dehighlight (ing) { 
+function dehighlight(ing) {
 	// console.log("Dehighlighting " + $(ing).text());
 	if (highlighted.length == 1 && highlighted[0].text() === ing.text()) {
 		// console.log("Removing dupe item.");
 		highlighted.pop();
 	}
-	ing.removeClass('highlighted');
-	ing.off('click');
-	ing.on('click', function (){ 
-		highlight(ing)
+	ing.removeClass("highlighted");
+	ing.off("click");
+	ing.on("click", function() {
+		highlight(ing);
 	});
 }
 
-function setSubmission () {
-	if (highlighted.length < 2) {return;}
+function setSubmission() {
+	if (highlighted.length < 2) {
+		return;
+	}
 	var submission = highlighted[0].text() + "<br>" + highlighted[1].text();
 
 	$("#submission-text").html(submission);
-	$("#overlay-submission").show(1000, function () {
+	$("#overlay-submission").show(1000, function() {
 		$("#submission-text").bigText();
 	});
 }
 
-function removeSubmission () {
-	$("#overlay-submission").hide(1000, function () {
+function removeSubmission() {
+	$("#overlay-submission").hide(1000, function() {
 		$("#submission-text").hide();
 		refresh(highlighted[0]);
 		refresh(highlighted[1]);
@@ -230,7 +241,7 @@ function removeSubmission () {
 	});
 }
 
-function getNextIngredient () {
+function getNextIngredient() {
 	console.log("Next ingredient: " + next_ingredient);
 	if (ingredients.length == next_ingredient) {
 		next_ingredient = 0;
@@ -242,19 +253,19 @@ function getNextIngredient () {
  * Shuffles array in place. ES6 version
  * @param {Array} a items The array containing the items.
  */
- function shuffle(a) {
+function shuffle(a) {
 	for (let i = a.length; i; i--) {
 		let j = Math.floor(Math.random() * i);
 		[a[i - 1], a[j]] = [a[j], a[i - 1]];
 	}
 }
 function readCookie(name) {
-  var nameEQ = name + "=";
-  var ca = document.cookie.split(';');
-  for(var i=0;i < ca.length;i++) {
-    var c = ca[i];
-    while (c.charAt(0)==' ') c = c.substring(1,c.length);
-    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-  }
-  return null;
+	var nameEQ = name + "=";
+	var ca = document.cookie.split(";");
+	for (var i = 0; i < ca.length; i++) {
+		var c = ca[i];
+		while (c.charAt(0) == " ") c = c.substring(1, c.length);
+		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+	}
+	return null;
 }
