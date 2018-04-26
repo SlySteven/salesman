@@ -147,6 +147,9 @@ function initCheck() {
 	if (!initialized && ing_ready && cust_ready) {
 		initializeComplete();
 		initialized = true;
+	} else if (initialized) {
+		console.log("Already initialized.");
+		hideLoader();
 	} else {
 		console.log(
 			"Init not ready. Ingredients: " + ing_ready + ", Customers: " + cust_ready

@@ -33,7 +33,10 @@ function joinRoom(reconnect) {
 		} else {
 			console.log("Joining room: " + msg);
 			if (!reconnect) {
+				console.log("First time setup, not a reconnect.");
 				startGame(msg);
+			} else {
+				hideLoader();
 			}
 		}
 	});
