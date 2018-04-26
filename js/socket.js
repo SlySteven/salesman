@@ -8,8 +8,7 @@ io.on("connect", function() {
 	hookRefresh();
 });
 io.on("disconnect", reason => {
-	console.log("Disconnected: " + reason);
-	showLoader();
+	disconnect(reason);
 });
 io.on("reconnect", attemptNumber => {
 	joinRoom(true);
@@ -20,6 +19,12 @@ var room_code;
 $("#button-join").click(function(e) {
 	joinRoom();
 });
+function disconnect(reason) {
+	console.log("Disconnected: " + reason);
+	if (!submissionVisible) {
+		showLoader();
+	}
+}
 
 function joinRoom(reconnect) {
 	room_code = $("#room-input")

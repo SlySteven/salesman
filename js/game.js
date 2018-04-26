@@ -10,6 +10,7 @@ var room_code;
 var ing_ready = false;
 var cust_ready = false;
 var initialized = false;
+var submissionVisible = false;
 
 // Initialize Cloud Firestore through Firebase
 var db = firebase.firestore();
@@ -232,12 +233,14 @@ function setSubmission() {
 	$("#submission-text").html(submission);
 	$("#overlay-submission").show(1000, function() {
 		$("#submission-text").bigText();
+		submissionVisible = true;
 	});
 }
 
 function removeSubmission() {
 	$("#overlay-submission").hide(1000, function() {
 		$("#submission-text").hide();
+		submissionVisible = true;
 		refresh(highlighted[0]);
 		refresh(highlighted[1]);
 		highlighted = [];
