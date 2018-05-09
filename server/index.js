@@ -1,8 +1,8 @@
 var app = require("express")();
 var http = require("http").Server(app);
 var io;
-//io = require("socket.io")(http, { path: "/salesman/socket.io" });
-io = require("socket.io")(http);
+io = require("socket.io")(http, { path: "/salesman/socket.io" });
+//io = require("socket.io")(http);
 
 var firebase = require("firebase/app");
 require("firebase/firestore");
