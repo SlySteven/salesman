@@ -1,6 +1,9 @@
 var app = require("express")();
 var http = require("http").Server(app);
-var io = require("socket.io")(http, { path: "/salesman/socket.io" });
+var io;
+//io = require("socket.io")(http, { path: "/salesman/socket.io" });
+io = require("socket.io")(http);
+
 var firebase = require("firebase/app");
 require("firebase/firestore");
 const PORT = process.env.PORT || 5000;
@@ -12,14 +15,19 @@ var firebase_config = {
 	projectId: process.env.FIREBASE_PROJECT_ID,
 	storageBucket: "",
 	messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-	timestampsInSnapshots: true,
 };
 firebase.initializeApp(firebase_config);
 const db = firebase.firestore();
+db.settings({ timestampsInSnapshots: true });
 
 app.get("/", function(req, res) {
 	res.sendFile(__dirname + "/index.html");
 });
+
+http.listen(PORT, function() {
+	console.log("Started server. Listening on *:" + PORT);
+});
+
 var customerDecks = {};
 io.on("connection", function(socket) {
 	console.log("user connected");
@@ -41,8 +49,8 @@ io.on("connection", function(socket) {
 			"Player joining room " + room_code + " with current customer " + customer
 		);
 		socket.join(room_code);
-		socket.emit("next customer", customer);
 		callback(room_code);
+		socket.emit("next customer", customer);
 	});
 	socket.on("create game", function(deck_id, callback) {
 		var room_code = createGame(deck_id);
@@ -110,10 +118,6 @@ function createGame(deck_id) {
 function convertDBDeck(deck) {
 	return deck.get("deck").split("\t");
 }
-
-http.listen(PORT, function() {
-	console.log("listening on *:" + PORT);
-});
 
 /**
  * Shuffles array in place.
