@@ -2,7 +2,7 @@ var app = require("express")();
 var http = require("http").Server(app);
 var io;
 io = require("socket.io")(http, { path: "/salesman/socket.io" });
-//io = require("socket.io")(http);
+// io = require("socket.io")(http);
 
 var firebase = require("firebase/app");
 require("firebase/firestore");
@@ -65,6 +65,10 @@ io.on("connection", function(socket) {
 	});
 	socket.on("next customer", function(room_code) {
 		// Get new customer
+		if (!customerDecks[room_code]) {
+			console.log("No deck exists for " + room_code);
+			return false;
+		}
 		console.log("Getting new customer for " + room_code);
 		var deck_pos_new = customerDecks[room_code]["deck_pos"] + 1;
 		customerDecks[room_code]["deck_pos"] = deck_pos_new;
