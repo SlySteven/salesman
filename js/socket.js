@@ -6,6 +6,7 @@ io.on("disconnect", reason => {
 	disconnect(reason);
 });
 io.on("reconnect", attemptNumber => {
+	console.log("Reconnecting.");
 	joinRoom(true);
 });
 
@@ -36,6 +37,7 @@ function joinRoom(reconnect) {
 				console.log("First time setup, not a reconnect.");
 				startGame(msg);
 			} else {
+				console.log("This was a reconnect.");
 				hideLoader();
 			}
 		}
@@ -58,6 +60,11 @@ $("#button-create").click(function(e) {
 });
 
 function hookRefresh() {
+	if (initialized) {
+		// This might be the first time we're loading the customer since a disconnect, so hide the loader. They likely don't need it.
+		hideLoader();
+		return false;
+	}
 	io.on("next customer", function(msg) {
 		if (msg == -1) {
 			console.log("Error getting next customer.");
@@ -66,12 +73,7 @@ function hookRefresh() {
 		var cust = $("#customer");
 		fade(cust, msg);
 		cust_ready = true;
-		if (!initialized) {
-			initCheck();
-		} else {
-			// Else this might be the first time we're loading the customer since a disconnect, so hide the loader
-			hideLoader();
-		}
+		initCheck();
 	});
 }
 
