@@ -192,6 +192,10 @@ function refresh(ing) {
 }
 
 function fade(e, f) {
+	if (e.text() === f) {
+		// Don't fade if you're not changing the text.
+		return false;
+	}
 	e.fadeOut(fade_speed, function() {
 		e.text(f);
 	});
