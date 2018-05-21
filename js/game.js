@@ -6,7 +6,6 @@ var next_ingredient = 0;
 var ing_count = 6;
 var fade_speed = 250;
 var highlighted = [];
-var room_code;
 var ing_ready = false;
 var cust_ready = false;
 var initialized = false;
